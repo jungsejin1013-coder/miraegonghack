@@ -9,6 +9,7 @@
 </head>
 <body class="bg-[#fcfaf7] text-stone-800 font-sans antialiased">
 
+  <!-- Navigation -->
   <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200">
     <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -24,6 +25,7 @@
     </div>
   </nav>
 
+  <!-- Hero Section -->
   <section class="py-20 px-6 text-center max-w-4xl mx-auto">
     <span class="px-4 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
       Jeonin High School Future Engineering
@@ -37,6 +39,7 @@
     </p>
   </section>
 
+  <!-- About Section -->
   <section id="about" class="py-16 bg-stone-100/70 border-y border-stone-200">
     <div class="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
       <div>
@@ -64,6 +67,7 @@
     </div>
   </section>
 
+  <!-- Main Projects Section -->
   <section id="projects" class="py-20 max-w-5xl mx-auto px-6">
     <div class="text-center mb-12">
       <h2 class="text-3xl font-bold text-stone-900">주요 메이킹 & 공학 프로젝트</h2>
@@ -103,6 +107,7 @@
     </div>
   </section>
 
+  <!-- Saturday AI LAB Section -->
   <section id="ai-lab" class="py-20 bg-amber-50/50 border-t border-stone-200">
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-12">
@@ -132,12 +137,14 @@
     </div>
   </section>
 
+  <!-- Community Board Section -->
   <section id="board" class="py-20 max-w-4xl mx-auto px-6">
     <div class="mb-8 text-center">
       <h2 class="text-3xl font-bold text-stone-900">미래공학 피드</h2>
       <p class="text-stone-500 text-sm mt-1">Neon DB & Vercel Blob 기반 사진/글 공유 공간</p>
     </div>
 
+    <!-- Post Creation Card -->
     <div class="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm mb-8">
       <h3 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">
         <i class="fa-solid fa-pen-to-square text-amber-800"></i> 새 글 작성하기
@@ -161,6 +168,7 @@
       </form>
     </div>
 
+    <!-- Feed List -->
     <div id="postFeed" class="space-y-4">
       <div class="bg-white rounded-2xl border border-stone-200 p-6 text-center text-stone-400">
         게시글을 불러오는 중입니다...
@@ -168,6 +176,7 @@
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="py-8 border-t border-stone-200 text-center text-stone-500 text-sm bg-white">
     <p>© 전인고등학교 미래공학. Powered by Vercel, Neon DB & Blob.</p>
   </footer>
@@ -176,17 +185,30 @@
     const postForm = document.getElementById('postForm');
     const postFeed = document.getElementById('postFeed');
 
+    // 파일을 Base64 데이터 문자열로 변환하는 함수
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    // 게시글 가져오기
     async function loadPosts() {
       try {
         const res = await fetch('/api/posts');
-        const posts = await res.json();
+        const data = await res.json();
         
-        if (!posts || posts.length === 0) {
-          postFeed.innerHTML = `<div class="bg-white rounded-2xl border border-stone-200 p-8 text-center text-stone-500">아직 등록된 게시글이 없습니다. 첫 번째 글을 남겨보세요!</div>`;
+        if (!res.ok) throw new Error(data.error || '게시글 불러오기 실패');
+
+        if (!data || data.length === 0) {
+          postFeed.innerHTML = `<div class="bg-white rounded-2xl border border-stone-200 p-8 text-center text-stone-500">아직 등록된 게시글이 없습니다. 첫 글을 작성해보세요!</div>`;
           return;
         }
 
-        postFeed.innerHTML = posts.map(post => `
+        postFeed.innerHTML = data.map(post => `
           <div class="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden flex flex-col md:flex-row">
             <div class="bg-stone-50 md:w-12 p-3 flex md:flex-col items-center justify-center gap-1 border-b md:border-b-0 md:border-r border-stone-200 text-stone-500 font-semibold text-xs">
               <button class="hover:text-amber-800 transition"><i class="fa-solid fa-arrow-up"></i></button>
@@ -209,40 +231,46 @@
           </div>
         `).join('');
       } catch (err) {
-        postFeed.innerHTML = `<div class="bg-white rounded-2xl border border-stone-200 p-6 text-center text-stone-400">게시글을 불러오지 못했습니다. (API 확인 필요)</div>`;
+        postFeed.innerHTML = `<div class="bg-white rounded-2xl border border-stone-200 p-6 text-center text-red-500 font-medium">오류: ${err.message}</div>`;
       }
     }
 
+    // 게시글 작성 처리
     postForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const submitBtn = document.getElementById('submitBtn');
       submitBtn.innerText = '업로드 중...';
       submitBtn.disabled = true;
 
-      const formData = new FormData();
-      formData.append('title', document.getElementById('postTitle').value);
-      formData.append('content', document.getElementById('postContent').value);
-      
-      const imageFile = document.getElementById('postImage').files[0];
-      if (imageFile) {
-        formData.append('image', imageFile);
-      }
-
       try {
+        const title = document.getElementById('postTitle').value;
+        const content = document.getElementById('postContent').value;
+        const imageFile = document.getElementById('postImage').files[0];
+
+        let imageBase64 = null;
+        let imageName = null;
+
+        if (imageFile) {
+          imageBase64 = await fileToBase64(imageFile);
+          imageName = imageFile.name;
+        }
+
         const res = await fetch('/api/posts', {
           method: 'POST',
-          body: formData
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, content, imageBase64, imageName })
         });
 
-        if (res.ok) {
-          postForm.reset();
-          loadPosts();
-        } else {
-          alert('게시글 등록에 실패했습니다.');
+        const result = await res.json();
+
+        if (!res.ok) {
+          throw new Error(result.error || '등록 중 오류가 발생했습니다.');
         }
+
+        postForm.reset();
+        loadPosts();
       } catch (err) {
-        console.error(err);
-        alert('서버 통신 오류가 발생했습니다.');
+        alert(err.message);
       } finally {
         submitBtn.innerText = '게시하기';
         submitBtn.disabled = false;
