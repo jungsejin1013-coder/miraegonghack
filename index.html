@@ -141,7 +141,7 @@
   <section id="board" class="py-20 max-w-4xl mx-auto px-6">
     <div class="mb-8 text-center">
       <h2 class="text-3xl font-bold text-stone-900">미래공학 피드</h2>
-      <p class="text-stone-500 text-sm mt-1">Neon DB & Vercel Blob 기반 사진/글 공유 공간</p>
+      <p class="text-stone-500 text-sm mt-1">자유롭게 소식과 사진을 작성해보세요!</p>
     </div>
 
     <!-- Post Creation Card -->
@@ -169,23 +169,19 @@
     </div>
 
     <!-- Feed List -->
-    <div id="postFeed" class="space-y-4">
-      <div class="bg-white rounded-2xl border border-stone-200 p-6 text-center text-stone-400">
-        게시글을 불러오는 중입니다...
-      </div>
-    </div>
+    <div id="postFeed" class="space-y-4"></div>
   </section>
 
   <!-- Footer -->
   <footer class="py-8 border-t border-stone-200 text-center text-stone-500 text-sm bg-white">
-    <p>© 전인고등학교 미래공학. Powered by Vercel, Neon DB & Blob.</p>
+    <p>© 전인고등학교 미래공학.</p>
   </footer>
 
+  <!-- Instant Board Script -->
   <script>
-    const postForm = document.getElementById('postForm');
-    const postFeed = document.getElementById('postFeed');
+    const STORAGE_KEY = 'jeonin_future_eng_posts';
 
-    // 파일을 Base64 데이터 문자열로 변환하는 함수
+    // 이미지를 Base64 텍스트로 변환하는 함수
     function fileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -195,87 +191,86 @@
       });
     }
 
-    // 게시글 가져오기
-    async function loadPosts() {
-      try {
-        const res = await fetch('/api/posts');
-        const data = await res.json();
-        
-        if (!res.ok) throw new Error(data.error || '게시글 불러오기 실패');
+    // 게시글 불러오기 함수
+    function loadPosts() {
+      const feed = document.getElementById('postFeed');
+      const posts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 
-        if (!data || data.length === 0) {
-          postFeed.innerHTML = `<div class="bg-white rounded-2xl border border-stone-200 p-8 text-center text-stone-500">아직 등록된 게시글이 없습니다. 첫 글을 작성해보세요!</div>`;
-          return;
-        }
-
-        postFeed.innerHTML = data.map(post => `
-          <div class="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden flex flex-col md:flex-row">
-            <div class="bg-stone-50 md:w-12 p-3 flex md:flex-col items-center justify-center gap-1 border-b md:border-b-0 md:border-r border-stone-200 text-stone-500 font-semibold text-xs">
-              <button class="hover:text-amber-800 transition"><i class="fa-solid fa-arrow-up"></i></button>
-              <span>${post.likes || 0}</span>
-              <button class="hover:text-amber-800 transition"><i class="fa-solid fa-arrow-down"></i></button>
-            </div>
-            
-            <div class="p-5 flex-1">
-              <div class="text-xs text-stone-400 mb-1">
-                <span>미래공학 부원</span> • <span>${new Date(post.created_at).toLocaleDateString('ko-KR')}</span>
-              </div>
-              <h4 class="text-lg font-bold text-stone-900 mb-2">${post.title}</h4>
-              <p class="text-stone-600 text-sm leading-relaxed mb-4 whitespace-pre-line">${post.content}</p>
-              ${post.image_url ? `
-                <div class="rounded-xl overflow-hidden bg-stone-100 max-h-96 mb-3 border border-stone-200">
-                  <img src="${post.image_url}" class="w-full h-full object-cover" alt="첨부 이미지" loading="lazy">
-                </div>
-              ` : ''}
-            </div>
-          </div>
-        `).join('');
-      } catch (err) {
-        postFeed.innerHTML = `<div class="bg-white rounded-2xl border border-stone-200 p-6 text-center text-red-500 font-medium">오류: ${err.message}</div>`;
+      if (posts.length === 0) {
+        feed.innerHTML = `<div class="bg-white rounded-2xl border border-stone-200 p-8 text-center text-stone-500">아직 등록된 게시글이 없습니다. 첫 글을 등록해보세요!</div>`;
+        return;
       }
+
+      feed.innerHTML = posts.map((post, index) => `
+        <div class="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden flex flex-col md:flex-row">
+          <div class="bg-stone-50 md:w-12 p-3 flex md:flex-col items-center justify-center gap-1 border-b md:border-b-0 md:border-r border-stone-200 text-stone-500 font-semibold text-xs">
+            <button onclick="likePost(${index})" class="hover:text-amber-800 transition"><i class="fa-solid fa-arrow-up"></i></button>
+            <span>${post.likes || 0}</span>
+            <button onclick="deletePost(${index})" class="hover:text-red-600 transition mt-2" title="삭제"><i class="fa-solid fa-trash"></i></button>
+          </div>
+          
+          <div class="p-5 flex-1">
+            <div class="text-xs text-stone-400 mb-1">
+              <span>미래공학 부원</span> • <span>${post.date}</span>
+            </div>
+            <h4 class="text-lg font-bold text-stone-900 mb-2">${post.title}</h4>
+            <p class="text-stone-600 text-sm leading-relaxed mb-4 whitespace-pre-line">${post.content}</p>
+            ${post.image ? `
+              <div class="rounded-xl overflow-hidden bg-stone-100 max-h-96 mb-3 border border-stone-200">
+                <img src="${post.image}" class="w-full h-full object-cover" alt="첨부 이미지">
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
     }
 
-    // 게시글 작성 처리
-    postForm.addEventListener('submit', async (e) => {
+    // 게시글 등록 처리
+    document.getElementById('postForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.innerText = '업로드 중...';
-      submitBtn.disabled = true;
+      
+      const title = document.getElementById('postTitle').value;
+      const content = document.getElementById('postContent').value;
+      const imageFile = document.getElementById('postImage').files[0];
 
-      try {
-        const title = document.getElementById('postTitle').value;
-        const content = document.getElementById('postContent').value;
-        const imageFile = document.getElementById('postImage').files[0];
-
-        let imageBase64 = null;
-        let imageName = null;
-
-        if (imageFile) {
-          imageBase64 = await fileToBase64(imageFile);
-          imageName = imageFile.name;
-        }
-
-        const res = await fetch('/api/posts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, content, imageBase64, imageName })
-        });
-
-        const result = await res.json();
-
-        if (!res.ok) {
-          throw new Error(result.error || '등록 중 오류가 발생했습니다.');
-        }
-
-        postForm.reset();
-        loadPosts();
-      } catch (err) {
-        alert(err.message);
-      } finally {
-        submitBtn.innerText = '게시하기';
-        submitBtn.disabled = false;
+      let imageBase64 = null;
+      if (imageFile) {
+        imageBase64 = await fileToBase64(imageFile);
       }
+
+      const posts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      const newPost = {
+        title,
+        content,
+        image: imageBase64,
+        likes: 0,
+        date: new Date().toLocaleDateString('ko-KR')
+      };
+
+      posts.unshift(newPost);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+
+      document.getElementById('postForm').reset();
+      loadPosts();
     });
+
+    // 추천 기능
+    function likePost(index) {
+      const posts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      posts[index].likes = (posts[index].likes || 0) + 1;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+      loadPosts();
+    }
+
+    // 삭제 기능
+    function deletePost(index) {
+      if (confirm('이 게시글을 삭제하시겠습니까?')) {
+        const posts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        posts.splice(index, 1);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+        loadPosts();
+      }
+    }
 
     loadPosts();
   </script>
