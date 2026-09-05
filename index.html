@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,19 +12,19 @@
   <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200">
     <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-stone-800 flex items-center justify-center font-bold text-amber-50">FE</div>
+        <div class="w-9 h-9 rounded-lg bg-amber-800 flex items-center justify-center font-bold text-amber-50">FE</div>
         <span class="font-bold text-lg tracking-wide text-stone-900">전인고 미래공학</span>
       </div>
       <div class="hidden md:flex gap-8 text-sm font-semibold text-stone-600">
-        <a href="#about" class="hover:text-amber-700 transition">소개</a>
-        <a href="#projects" class="hover:text-amber-700 transition">주요 활동</a>
-        <a href="#ai-lab" class="hover:text-amber-700 transition">토요 AI LAB</a>
-        <a href="#board" class="hover:text-amber-700 transition">커뮤니티</a>
+        <a href="#about" class="hover:text-amber-800 transition">소개</a>
+        <a href="#projects" class="hover:text-amber-800 transition">주요 활동</a>
+        <a href="#ai-lab" class="hover:text-amber-800 transition">토요 AI LAB</a>
+        <a href="#board" class="hover:text-amber-800 transition">커뮤니티</a>
       </div>
     </div>
   </nav>
 
-  <section class="py-16 px-6 text-center max-w-4xl mx-auto">
+  <section class="py-20 px-6 text-center max-w-4xl mx-auto">
     <span class="px-4 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
       Jeonin High School Future Engineering
     </span>
@@ -37,22 +37,117 @@
     </p>
   </section>
 
-  <section id="board" class="py-10 max-w-4xl mx-auto px-4">
+  <section id="about" class="py-16 bg-stone-100/70 border-y border-stone-200">
+    <div class="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h2 class="text-2xl font-bold text-stone-900 mb-4">주말에도 불이 꺼지지 않는 교실</h2>
+        <p class="text-stone-600 leading-relaxed mb-4">
+          미래공학 구성원 대부분은 주말 학습을 신청하여 토요일과 일요일에도 등교해 몰입도 높은 프로그래밍 및 공학 실습에 참여합니다.
+        </p>
+        <p class="text-stone-500 leading-relaxed">
+          이론에 그치지 않고 자율 주행, 로보틱스, 인공지능을 직접 제작하고 디버깅하며 하드웨어와 소프트웨어를 넘나드는 융합형 인재로 성장하고 있습니다.
+        </p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+        <h3 class="text-lg font-semibold text-amber-800 mb-3"><i class="fa-solid fa-calendar-check mr-2"></i>주말 학습 스케줄</h3>
+        <ul class="space-y-3 text-sm text-stone-700">
+          <li class="flex items-center gap-3">
+            <span class="bg-amber-100 text-amber-900 px-2.5 py-1 rounded-md text-xs font-bold">토요일</span>
+            AI 집중 실습 & 프로젝트 알고리즘 구현
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="bg-stone-200 text-stone-800 px-2.5 py-1 rounded-md text-xs font-bold">일요일</span>
+            하드웨어 메이킹, 3D 프린팅 및 테스트 드라이브
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="py-20 max-w-5xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-stone-900">주요 메이킹 & 공학 프로젝트</h2>
+      <p class="text-stone-500 text-sm mt-1">하드웨어와 소프트웨어를 넘나드는 실전 만들기 활동</p>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm hover:border-amber-400 transition">
+        <div class="text-amber-800 text-3xl mb-4"><i class="fa-solid fa-robot"></i></div>
+        <h3 class="text-lg font-bold mb-2 text-stone-900">서빙 로봇 & 로봇팔</h3>
+        <p class="text-stone-600 text-sm">모터 제어, 관절 역학 및 자율 주행 센서를 결합한 실전형 로보틱스 제작 프로젝트</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm hover:border-amber-400 transition">
+        <div class="text-amber-800 text-3xl mb-4"><i class="fa-solid fa-car"></i></div>
+        <h3 class="text-lg font-bold mb-2 text-stone-900">RC 모빌리티 시리즈</h3>
+        <p class="text-stone-600 text-sm">RC카, RC비행기, RC보트 등 지상·해상·공중 분야별 무선 조종 기체 설계 및 테스트</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm hover:border-amber-400 transition">
+        <div class="text-amber-800 text-3xl mb-4"><i class="fa-solid fa-database"></i></div>
+        <h3 class="text-lg font-bold mb-2 text-stone-900">공공데이터 활용</h3>
+        <p class="text-stone-600 text-sm">공공 API 및 빅데이터 분석을 활용한 지역 사회 문제 해결 및 앱/웹 서비스 개발</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm hover:border-amber-400 transition">
+        <div class="text-amber-800 text-3xl mb-4"><i class="fa-solid fa-rocket"></i></div>
+        <h3 class="text-lg font-bold mb-2 text-stone-900">물로켓 캠프</h3>
+        <p class="text-stone-600 text-sm">공기역학과 압력 공학 원리를 직접 검증하고 발사 궤적을 데이터화하는 창의 캠프</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm hover:border-amber-400 transition">
+        <div class="text-amber-800 text-3xl mb-4"><i class="fa-solid fa-gamepad"></i></div>
+        <h3 class="text-lg font-bold mb-2 text-stone-900">교내 게임 대회</h3>
+        <p class="text-stone-600 text-sm">학생들이 직접 기획·운영하고 소프트웨어 테스트와 연계하는 게임 교류의 장</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ai-lab" class="py-20 bg-amber-50/50 border-t border-stone-200">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="text-amber-800 font-bold text-xs bg-amber-100 px-3 py-1 rounded-full border border-amber-200">SPECIAL ACTIVITY</span>
+        <h2 class="text-3xl font-bold mt-3 text-stone-900">토요 인공지능(AI) 프로젝트</h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="p-6 bg-white rounded-2xl border border-stone-200 shadow-sm">
+          <span class="text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded font-bold">NLP</span>
+          <h3 class="text-lg font-bold mt-4 mb-2 text-stone-900">영화평 분류 AI</h3>
+          <p class="text-stone-600 text-sm">자연어 처리(NLP) 알고리즘을 활용한 감성 분석 및 영화 리뷰 긍부정 분류 모델 구현</p>
+        </div>
+
+        <div class="p-6 bg-white rounded-2xl border border-stone-200 shadow-sm">
+          <span class="text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded font-bold">Vision</span>
+          <h3 class="text-lg font-bold mt-4 mb-2 text-stone-900">번호판 인식 AI</h3>
+          <p class="text-stone-600 text-sm">OpenCV 및 컴퓨터 비전 모델을 이용한 객체 탐지 및 차량 번호판 실시간 추출</p>
+        </div>
+
+        <div class="p-6 bg-white rounded-2xl border border-stone-200 shadow-sm">
+          <span class="text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded font-bold">Deep Learning</span>
+          <h3 class="text-lg font-bold mt-4 mb-2 text-stone-900">손글씨 인식 AI</h3>
+          <p class="text-stone-600 text-sm">CNN(합성곱 신경망) 구조 기반 MNIST 데이터셋 학습 및 손글씨 숫자인식 모델 제작</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="board" class="py-20 max-w-4xl mx-auto px-6">
     <div class="mb-8 text-center">
       <h2 class="text-3xl font-bold text-stone-900">미래공학 피드</h2>
-      <p class="text-stone-500 text-sm mt-1">Neon DB & Vercel Blob 기반 활동 공유 공간</p>
+      <p class="text-stone-500 text-sm mt-1">Neon DB & Vercel Blob 기반 사진/글 공유 공간</p>
     </div>
 
-    <div class="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm mb-8">
+    <div class="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm mb-8">
       <h3 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">
-        <i class="fa-solid fa-pen-to-square text-amber-700"></i> 새 글 작성하기
+        <i class="fa-solid fa-pen-to-square text-amber-800"></i> 새 글 작성하기
       </h3>
       <form id="postForm" class="space-y-4">
         <input type="text" id="postTitle" placeholder="제목을 입력하세요" required
-          class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm">
+          class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-800/30 text-sm">
         
         <textarea id="postContent" rows="3" placeholder="활동 내용이나 프로젝트 소식을 자유롭게 남겨주세요." required
-          class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm resize-none"></textarea>
+          class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-800/30 text-sm resize-none"></textarea>
         
         <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2">
           <input type="file" id="postImage" accept="image/*"
@@ -73,11 +168,14 @@
     </div>
   </section>
 
+  <footer class="py-8 border-t border-stone-200 text-center text-stone-500 text-sm bg-white">
+    <p>© 전인고등학교 미래공학. Powered by Vercel, Neon DB & Blob.</p>
+  </footer>
+
   <script>
     const postForm = document.getElementById('postForm');
     const postFeed = document.getElementById('postFeed');
 
-    // 1. 게시글 목록 불러오기
     async function loadPosts() {
       try {
         const res = await fetch('/api/posts');
@@ -91,9 +189,9 @@
         postFeed.innerHTML = posts.map(post => `
           <div class="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden flex flex-col md:flex-row">
             <div class="bg-stone-50 md:w-12 p-3 flex md:flex-col items-center justify-center gap-1 border-b md:border-b-0 md:border-r border-stone-200 text-stone-500 font-semibold text-xs">
-              <button class="hover:text-amber-700 transition"><i class="fa-solid fa-arrow-up"></i></button>
+              <button class="hover:text-amber-800 transition"><i class="fa-solid fa-arrow-up"></i></button>
               <span>${post.likes || 0}</span>
-              <button class="hover:text-amber-700 transition"><i class="fa-solid fa-arrow-down"></i></button>
+              <button class="hover:text-amber-800 transition"><i class="fa-solid fa-arrow-down"></i></button>
             </div>
             
             <div class="p-5 flex-1">
@@ -111,11 +209,10 @@
           </div>
         `).join('');
       } catch (err) {
-        postFeed.innerHTML = `<div class="bg-white rounded-2xl border border-stone-200 p-6 text-center text-stone-400">게시글을 불러오지 못했습니다.</div>`;
+        postFeed.innerHTML = `<div class="bg-white rounded-2xl border border-stone-200 p-6 text-center text-stone-400">게시글을 불러오지 못했습니다. (API 확인 필요)</div>`;
       }
     }
 
-    // 2. 게시글 및 이미지 업로드 제출
     postForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const submitBtn = document.getElementById('submitBtn');
@@ -154,9 +251,5 @@
 
     loadPosts();
   </script>
-</body>
-</html>
-  </footer>
-
 </body>
 </html>
